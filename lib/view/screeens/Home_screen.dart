@@ -2,9 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_8/provider/nav_provider.dart';
 import 'package:flutter_application_8/view/componenets/botto_nav.dart';
+import 'package:flutter_application_8/view/screeens/Cart_Screen.dart';
+import 'package:flutter_application_8/view/screeens/Profile_page.dart';
 import 'package:flutter_application_8/view/screeens/pages/Catogoery_Page.dart';
 import 'package:flutter_application_8/view/screeens/pages/add_product.dart';
-import 'package:flutter_application_8/view/screeens/settings_page.dart';
+import 'package:flutter_application_8/view/screeens/discover_people.dart';
 
 import 'package:provider/provider.dart';
 
@@ -13,7 +15,7 @@ class HomeScreen extends StatelessWidget {
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-  final List<Widget> pages = [CategoryPage(), Settings()];
+  final List<Widget> pages = [CategoryPage(), Discover(),CartScreen(),Profile()];
 
   @override
   Widget build(BuildContext context) {

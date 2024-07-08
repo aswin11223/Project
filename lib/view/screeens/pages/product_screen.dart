@@ -57,7 +57,7 @@ class ProductListScreen extends StatelessWidget {
                       final product = products[index];
                       return ShowProducts(
                         ontapp:(){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductDetail(art: product.name,imageUrl: product.imageUrl,description: product.description,)));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductDetail(art: product.name,imageUrl: product.imageUrl,description: product.description,price: product.price,artist: product.artistName,)));
                        
                         } ,
                         name: product.name,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_8/provider/add_productprovider.dart';
 
 import 'package:flutter_application_8/provider/auth/authgate.dart';
+import 'package:flutter_application_8/provider/cartprovider.dart';
 import 'package:flutter_application_8/provider/category_provider.dart';
 import 'package:flutter_application_8/provider/loginor_regprovider.dart';
 
@@ -22,6 +23,7 @@ class Intro_page extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => CategoryProvider()),
         ChangeNotifierProvider(create: (context) => AddProductProvider()),
          ChangeNotifierProvider(create: (context) =>Logorreg()),
+         ChangeNotifierProvider(create: (context) =>Cartprovider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

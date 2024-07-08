@@ -4,12 +4,16 @@ class DetailProduct extends StatelessWidget {
   final String artname;
   final String imageUrl;
   final String description;
+  final String text;
+  final void Function()? onTap;
 
   const DetailProduct({
     super.key,
     required this.artname,
     required this.imageUrl,
     required this.description,
+    required this.text,
+    required this.onTap,
   });
 
   @override
@@ -44,7 +48,7 @@ class DetailProduct extends StatelessWidget {
                 ),
               ),
               Container(
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(40),
@@ -80,7 +84,7 @@ class DetailProduct extends StatelessWidget {
                                 SizedBox(width: screenWidth * 0.13),
                                 Container(
                                   width: screenWidth * 0.67,
-                                  height: screenHeight * 0.12,
+                                  height: screenHeight * 0.16,
                                   child: SingleChildScrollView(
                                     child: Text(
                                       description,
@@ -109,6 +113,33 @@ class DetailProduct extends StatelessWidget {
                   child: Image.network(
                     imageUrl,
                     fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(24),
+                  onTap: onTap,
+                  splashColor: Colors.black87,  // Optional: Customize the splash color
+                  child: Container(
+                    
+                    width: screenWidth * 0.6,
+                    height: screenHeight * 0.07,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(28),
+                      color: Colors.black,
+                    ),
+                    child: Center(
+                      child: Text(
+                        text,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),
