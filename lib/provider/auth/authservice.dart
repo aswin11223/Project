@@ -2,77 +2,66 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-class Authservice{
-  //get instance of firebase
+class AuthService {
+  // Get instances of FirebaseAuth and FirebaseFirestore
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  final FirebaseAuth _auth=FirebaseAuth.instance;
-  final FirebaseFirestore _firestore=FirebaseFirestore.instance;
-
-
-  User?getcurrentuser(){
-     return   _auth.currentUser;
+  // Get the current user
+  User? getCurrentUser() {
+    return _auth.currentUser;
   }
 
-  //signin
+  // Sign in with email and password
+  Future<UserCredential> signInWithEmailPassword(String email, String password) async {
+    try {
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(email: email, password: password);
 
-  Future<UserCredential>signinwithemailpassword(String email,password)async{
-    try{
-      UserCredential userCredential=await _auth.signInWithEmailAndPassword(email: email, password: password);
-
-   //save user info if it dosen't already exist
-
-
-
-
+      // Save user info if it doesn't already exist
 
       return userCredential;
-    }on FirebaseAuthException catch(e){
+    } on FirebaseAuthException catch (e) {
       throw Exception(e.code);
-      
     }
-
-  }
-  //signout
-
-  Future<void>signout()async{
-      return await  _auth.signOut();
-
-
-  }
-  //signup
-
-  Future<UserCredential>signupwithemailandpassowrd(String email,password)async{
-   try{
-     UserCredential userCredential=await _auth.createUserWithEmailAndPassword(email: email, password: password);
-
-//save user info in a seperate document
-
-
-
-
-    return userCredential;
-   }on FirebaseAuthException catch(e){
-    throw Exception(e.code);
-   }
-
-
   }
 
-  signinwithgoogle()async{
-    final GoogleSignInAccount? guser=await GoogleSignIn().signIn();
+  // Sign out
+  Future<void> signOut() async {
+    return await _auth.signOut();
+  }
 
+  // Sign up with email and password
+  Future<UserCredential> signUpWithEmailAndPassword(String email, String password) async {
+    try {
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
 
-    final GoogleSignInAuthentication? gauth=await guser!.authentication;
+      // Save user info in a separate document
 
+      return userCredential;
+    } on FirebaseAuthException catch (e) {
+      throw Exception(e.code);
+    }
+  }
 
-    final credential=GoogleAuthProvider.credential(
-      accessToken: gauth!.accessToken,
-      idToken: gauth.idToken
+  // Sign in with Google
+  Future<UserCredential> signInWithGoogle() async {
+    final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
+    final GoogleSignInAuthentication? gAuth = await gUser!.authentication;
 
+    final credential = GoogleAuthProvider.credential(
+      accessToken: gAuth!.accessToken,
+      idToken: gAuth.idToken,
     );
-    return await FirebaseAuth.instance.signInWithCredential(credential);
-    
-      }
-   
-  
+
+    return await _auth.signInWithCredential(credential);
+  }
+
+  // Forgot Password
+  Future<void> sendPasswordResetEmail(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      throw Exception(e.code);
+    }
+  }
 }

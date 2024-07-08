@@ -108,7 +108,10 @@ class AddProductScreen extends StatelessWidget {
               ),
               
             
-            
+                ElevatedButton(onPressed: (){
+                  _auth.signOut();
+
+                }, child:Text("logout"))
                 
               ],
             ),

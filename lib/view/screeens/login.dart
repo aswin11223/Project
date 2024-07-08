@@ -1,44 +1,56 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_application_8/provider/auth/authservice.dart';
-import 'package:flutter_application_8/provider/auth/google_sign.dart';
 import 'package:flutter_application_8/view/componenets/googl_button.dart';
+
 import 'package:flutter_application_8/view/componenets/my_button.dart';
 import 'package:flutter_application_8/view/componenets/my_textfield.dart';
 
 class Login extends StatelessWidget {
-  final TextEditingController email_con = TextEditingController();
-  final TextEditingController pass_con = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final AuthService _authService = AuthService();
   void Function()? onTap;
 
-//login
-  void login(BuildContext context) async {
-    final authservice = Authservice();
-    try {
-      await authservice.signinwithemailpassword(email_con.text, pass_con.text);
-    } catch (e) {
-      showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-                title: Text(e.toString()),
-              ));
-    }
-  }
-
-  void googlesignin(BuildContext context) async {
-    final authser = Authservice();
-    try {
-      await authser.signinwithgoogle();
-    } catch (e) {
-      showDialog(
-          context: context,
-          builder: (context) => const AlertDialog(
-                title: Text("error sign in wiith google"),
-              ));
-    }
-  }
-
   Login({super.key, required this.onTap});
+
+  void login(BuildContext context) async {
+    try {
+      await _authService.signInWithEmailPassword(emailController.text, passwordController.text);
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(e.toString()),
+        ),
+      );
+    }
+  }
+
+  void googleSignIn(BuildContext context) async {
+    try {
+      await _authService.signInWithGoogle();
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: (context) => const AlertDialog(
+          title: Text("Error signing in with Google"),
+        ),
+      );
+    }
+  }
+
+  void resetPassword(BuildContext context) async {
+    try {
+      await _authService.sendPasswordResetEmail(emailController.text);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Password reset email sent')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${e.toString()}')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,50 +60,44 @@ class Login extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 10),
             Text(
-              "welcome back,you have been missed!",
+              "Welcome back, you have been missed!",
               style: TextStyle(
                 fontWeight: FontWeight.w800,
                 fontSize: 16,
                 color: Theme.of(context).colorScheme.inversePrimary,
               ),
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 10),
             Textfieldd(
-              textcont: email_con,
+              textcont: emailController,
               obs: false,
               hinttexxt: "Email",
             ),
             Textfieldd(
-              textcont: pass_con,
+              textcont: passwordController,
               obs: true,
-              hinttexxt: "password",
+              hinttexxt: "Password",
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 GestureDetector(
-                    child: const Text(
-                  "forgot password?",
-                  style: TextStyle(
-                    color: Colors.black,
+                  onTap: () => resetPassword(context),
+                  child: const Text(
+                    "Forgot password?",
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
                   ),
-                ))
+                )
               ],
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 10),
             const SizedBox(height: 15),
             Mybutton(textt: "Login", ontapp: () => login(context)),
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -101,13 +107,11 @@ class Login extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
-                const SizedBox(
-                  width: 5,
-                ),
+                const SizedBox(width: 5),
                 GestureDetector(
                   onTap: onTap,
                   child: const Text(
-                    "Signup Now",
+                    "Sign up now",
                     style: TextStyle(
                       color: Colors.black,
                     ),
@@ -115,30 +119,26 @@ class Login extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Text(
                   "_______________",
-                  style:
-                      TextStyle(color: Theme.of(context).colorScheme.primary),
+                  style: TextStyle(color: Theme.of(context).colorScheme.primary),
                 ),
-                const Text("or continue with",
-                    style: TextStyle(color: Colors.grey)),
+                const Text(
+                  "or continue with",
+                  style: TextStyle(color: Colors.grey),
+                ),
                 Text(
                   "_______________",
-                  style:
-                      TextStyle(color: Theme.of(context).colorScheme.primary),
+                  style: TextStyle(color: Theme.of(context).colorScheme.primary),
                 ),
               ],
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            GoogleButton(textt: "Google", ontapp: () => googlesignin(context))
+            const SizedBox(height: 20),
+            GoogleButton(textt: "Google", ontapp: () => googleSignIn(context))
           ],
         ),
       ),

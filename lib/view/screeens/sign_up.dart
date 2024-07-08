@@ -22,10 +22,10 @@ void googlesign(){
 
 
   void register(BuildContext context) {
-    final _auth = Authservice();
+    final _auth = AuthService();
     if (passs_con.text == confirm_pass.text) {
       try {
-        _auth.signupwithemailandpassowrd(email_con.text, passs_con.text);
+        _auth.signUpWithEmailAndPassword(email_con.text, passs_con.text);
       } catch (e) {
         showDialog(
             context: context,
