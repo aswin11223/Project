@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "883781263237",
+    "project_id": "shopping-ecf9d",
+    "storage_bucket": "shopping-ecf9d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:883781263237:android:a3a4bea14c710639e3aeec",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_8"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBL3Fs9Ws5VYubaKWzPi9vjqOIbbl_yiZI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
