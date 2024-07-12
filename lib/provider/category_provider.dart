@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_8/model/add_product.dart';
@@ -21,7 +22,7 @@ class CategoryProvider with ChangeNotifier {
   Future<void> fetchCategories() async {
     var snapshot = await FirebaseFirestore.instance.collection('categories').get();
     _categories = snapshot.docs.map((doc) => Category(
-      id: doc.id, // Use document ID as category ID
+      id: doc.id,
       name: doc['name'],
       imageUrl: doc['imageUrl'],
     )).toList();
@@ -33,7 +34,7 @@ class CategoryProvider with ChangeNotifier {
       'name': name,
       'imageUrl': imageUrl,
     });
-    fetchCategories(); // Refresh the categories after adding a new one
+    fetchCategories();
   }
 
   Future<void> fetchProducts() async {
@@ -55,6 +56,7 @@ class CategoryProvider with ChangeNotifier {
       artistName: product.artistName,
       imageUrl: imageUrl,
       price: product.price,
+      userid: FirebaseAuth.instance.currentUser!.uid,
     );
 
     await FirebaseFirestore.instance.collection('products').add(newProduct.toMap());
@@ -65,7 +67,21 @@ class CategoryProvider with ChangeNotifier {
     return _products.where((product) => product.categoryId == categoryId).toList();
   }
 
+  List<Product> productsByUser(String userId) {
+    return _products.where((product) => product.userid == userId).toList();
+  }
+
+  Future<void> deleteProduct(String productId) async {
+    await FirebaseFirestore.instance.collection('products').doc(productId).delete();
+    fetchProducts();
+  }
+
   Future<void> refreshCategories() async {
     await fetchCategories();
   }
+
+
+
 }
+
+

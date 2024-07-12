@@ -32,7 +32,7 @@ class Textfielddd extends StatelessWidget {
                 decoration: InputDecoration(
                   
                   enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(30)),
+                    borderRadius: const BorderRadius.all(Radius.circular(30)),
                     borderSide: BorderSide(
                       color: Theme.of(context).colorScheme.tertiary,
                       
@@ -49,7 +49,7 @@ class Textfielddd extends StatelessWidget {
                   hintStyle: TextStyle(
                     color: Theme.of(context).colorScheme.primary,
                   ),
-                  prefixIcon: Icon(Icons.search)
+                  prefixIcon: const Icon(Icons.search)
                 ),
                 
               ),

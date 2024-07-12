@@ -31,7 +31,7 @@ class Descriptioncon extends StatelessWidget {
           
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(15)),
+              borderRadius: const BorderRadius.all(Radius.circular(15)),
               borderSide: BorderSide(
                 color: Theme.of(context).colorScheme.inversePrimary,
                 

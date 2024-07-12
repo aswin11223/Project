@@ -18,63 +18,51 @@ class AddProductScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final categories = Provider.of<CategoryProvider>(context).categories;
     final addProductProvider = Provider.of<AddProductProvider>(context);
-     final FirebaseAuth _auth=FirebaseAuth.instance;
+    final FirebaseAuth _auth = FirebaseAuth.instance;
 
-
-     void logout(){
+    void logout() {
       _auth.signOut();
-     }
-  
+    }
 
     void back() {
       Navigator.pop(context);
     }
 
-    
-    void clearcon(){
+    void clearcon() {
       addProductProvider.disposeControllers();
-
     }
-    
-    void  addimage(){
+
+    void addimage() {
       addProductProvider.pickImage();
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text(
-                    "Add Yours",
-                    style: TextStyle(fontWeight: FontWeight.w800, fontSize: 30),
-                  ),
-                  
-                  centerTitle: true,
-                  backgroundColor:Theme.of(context).colorScheme.secondary ,
-                  leading: IconButton(onPressed:(){} , icon:ProductArrow(ontapressed:back, ontapress: clearcon) ),
-                  ),
+      appBar: AppBar(
+        title: const Text(
+          "Add Yours",
+          style: TextStyle(fontWeight: FontWeight.w800, fontSize: 30),
+        ),
+        centerTitle: true,
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        leading: IconButton(
+            onPressed: () {},
+            icon: ProductArrow(ontapressed: back, ontapress: clearcon)),
+      ),
       body: Padding(
-        padding:  EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Center(
             child: Column(
               children: [
-            
-            
-            
-                
-                
-                
                 if (addProductProvider.image != null)
                   Image.file(
                     addProductProvider.image!,
                     height: 120,
                   ),
-                SizedBox(
+                const SizedBox(
                   height: 30,
-                 
                 ),
-                
                 PickImage(text: "image", ontap: addimage),
-                
-                
                 ProductField(
                     hinttexxt: "Art Name",
                     textcont: addProductProvider.nameController),
@@ -88,31 +76,31 @@ class AddProductScreen extends StatelessWidget {
                     hinttexxt: "Price",
                     textcont: addProductProvider.priceController),
                 const SizedBox(height: 10),
-            
-                
-                PostButton(text: "Post", ontap: (){
-                  addProductProvider.addProduct(context, categories);
-                }),
-                  Wrap(
-                spacing: 8.0,
-                children: categories.map((category) {
-                  return ChoiceChip(
-                    label: Text(category.name),
-                    selected: addProductProvider.selectedCategoryId == category.id,
-                    onSelected: (isSelected) {
-                      addProductProvider.selectCategory(isSelected ? category.id : null);
+                PostButton(
+                    text: "Post",
+                    ontap: () {
+                      addProductProvider.addProduct(context, categories);
+                    }),
+                Wrap(
+                  spacing: 8.0,
+                  children: categories.map((category) {
+                    return ChoiceChip(
+                      label: Text(category.name),
+                      selected:
+                          addProductProvider.selectedCategoryId == category.id,
+                      onSelected: (isSelected) {
+                        addProductProvider
+                            .selectCategory(isSelected ? category.id : null);
+                      },
+                      selectedColor: Colors.brown,
+                    );
+                  }).toList(),
+                ),
+                ElevatedButton(
+                    onPressed: () {
+                      _auth.signOut();
                     },
-                    selectedColor: Colors.brown,
-                  );
-                }).toList(),
-              ),
-              
-            
-                ElevatedButton(onPressed: (){
-                  _auth.signOut();
-
-                }, child:Text("logout"))
-                
+                    child: Text("logout"))
               ],
             ),
           ),

@@ -41,6 +41,7 @@ class AddProductProvider with ChangeNotifier {
         priceController.text.isNotEmpty &&
         _image != null) {
       final product = Product(
+        userid:FirebaseAuth.instance.currentUser!.uid,
         id: DateTime.now().toString(),
         categoryId: _selectedCategoryId!,
         name: nameController.text,

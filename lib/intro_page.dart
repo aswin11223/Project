@@ -7,6 +7,8 @@ import 'package:flutter_application_8/provider/category_provider.dart';
 import 'package:flutter_application_8/provider/loginor_regprovider.dart';
 
 import 'package:flutter_application_8/provider/nav_provider.dart';
+import 'package:flutter_application_8/provider/profileprovider/like_provider.dart';
+import 'package:flutter_application_8/provider/profileprovider/profileprovider.dart';
 import 'package:flutter_application_8/view/theme/light_mode.dart';
 import 'package:provider/provider.dart'; // Ensure the correct import path
 
@@ -23,9 +25,14 @@ class Intro_page extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => CategoryProvider()),
         ChangeNotifierProvider(create: (context) => AddProductProvider()),
          ChangeNotifierProvider(create: (context) =>Logorreg()),
-         ChangeNotifierProvider(create: (context) =>Cartprovider()),
+         ChangeNotifierProvider(create: (context) =>CartProvider()),
+         ChangeNotifierProvider(create: (context)=>Profileprovider()),
+          ChangeNotifierProvider(create: (context)=>Like()),
+         
       ],
       child: MaterialApp(
+
+     
         debugShowCheckedModeBanner: false,
         theme: lightmode,
         home: AuthGate(),

@@ -36,10 +36,10 @@ class ProductListScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 50,),
+                const SizedBox(height: 50,),
                 Row(children: [
                   BackArrow(ontapressed: (){}),
-                  SizedBox(width: 20,),
+                  const SizedBox(width: 20,),
                   cat(text: "products in ${categoryName}"),
                   
                 ],),

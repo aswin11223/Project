@@ -11,7 +11,8 @@ class BackArrow extends StatelessWidget {
       width: 50,
       
        decoration: BoxDecoration(borderRadius: BorderRadius.circular(25),color: Colors.black),
-       child: IconButton(onPressed: ontapressed, icon:Icon(Icons.arrow_back_ios,color: Colors.white,)),
+       child: IconButton(onPressed: ontapressed, icon:const Icon(Icons.arrow_back_ios,color: Colors.white,)),
+       
 
     );
   }

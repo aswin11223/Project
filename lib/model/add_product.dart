@@ -8,8 +8,10 @@ class Product {
   final String description;
   final String imageUrl;
   final double price;
+  final String userid;
 
   Product({
+    required this.userid,
     required this.id,
     required this.categoryId,
     required this.name,
@@ -19,9 +21,11 @@ class Product {
     required this.price,
   });
 
+  // Factory method to create a Product object from a Firestore DocumentSnapshot
   factory Product.fromFirestore(DocumentSnapshot doc) {
     Map data = doc.data() as Map<String, dynamic>;
     return Product(
+      userid: data['userid'] ?? '',
       id: data['id'] ?? '',
       categoryId: data['categoryId'] ?? '',
       name: data['name'] ?? '',
@@ -32,8 +36,10 @@ class Product {
     );
   }
 
+  // Convert Product object to a Map for storing in Firestore
   Map<String, dynamic> toMap() {
     return {
+      'userid': userid,
       'id': id,
       'categoryId': categoryId,
       'name': name,

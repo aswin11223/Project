@@ -13,6 +13,7 @@ class CategoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
+        
         children: [
           const SizedBox(height: 60),
           Textfielddd(hinttexxt: "searchbar"),

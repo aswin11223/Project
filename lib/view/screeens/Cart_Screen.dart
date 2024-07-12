@@ -1,20 +1,51 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_application_8/provider/cartprovider.dart';
-import 'package:flutter_application_8/model/add_product.dart';
+import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final cartProvider = Provider.of<Cartprovider>(context);
+    final cartProvider = Provider.of<CartProvider>(context);
+    final User? user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) {
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.secondary,
+          title: const Text(
+            'Your Cart:',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.w800,
+              fontSize: 25,
+            ),
+          ),
+        ),
+        body: const Center(
+          child: Text('Please log in to see your cart'),
+        ),
+      );
+    }
+
+    // Fetch cart items for the current user
+    cartProvider.loadCartItems();
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.secondary,
-        title: Text('Your Cart:',style: TextStyle(color: Colors.black,fontWeight: FontWeight.w800,fontSize: 25),),
+        title: const Text(
+          'Your Cart:',
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.w800,
+            fontSize: 25,
+          ),
+        ),
       ),
       body: cartProvider.items.isEmpty
-          ? Center(
+          ? const Center(
               child: Text('No items in the cart'),
             )
           : ListView.builder(
@@ -22,26 +53,26 @@ class CartScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 final item = cartProvider.items[index];
                 return Card(
-                  margin: EdgeInsets.all(10),
+                  margin: const EdgeInsets.all(10),
                   child: ListTile(
                     leading: Image.network(
-                      item.imageurl,
+                      item.imageUrl,
                       width: 50,
                       height: 50,
                       fit: BoxFit.cover,
                     ),
-                    title: Text(item.artist),
+                    title: Text(item.artistName),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('ArtNmae: ${item.artname}'),
+                        Text('Art Name: ${item.name}'),
                         Text('Price: \$${item.price.toStringAsFixed(2)}'),
                       ],
                     ),
                     trailing: IconButton(
-                      icon: Icon(Icons.remove_circle_outline),
+                      icon: const Icon(Icons.remove_circle_outline),
                       onPressed: () {
-                        cartProvider.removefromcart(item);
+                        cartProvider.removeFromCart(item);
                       },
                     ),
                   ),
@@ -51,17 +82,23 @@ class CartScreen extends StatelessWidget {
       bottomNavigationBar: cartProvider.items.isEmpty
           ? null
           : Padding(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     'Total Price:',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   Text(
                     '\$${cartProvider.totalPrice.toStringAsFixed(2)}',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ],
               ),
