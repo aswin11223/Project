@@ -1,64 +1,46 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_application_8/model/user_model.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'dart:io';
 
 class AuthService {
-  // Get instances of FirebaseAuth and FirebaseFirestore
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-
-  // Get the current user
   User? getCurrentUser() {
     return _auth.currentUser;
   }
 
-  // Sign in with email and password
   Future<UserCredential> signInWithEmailPassword(String email, String password) async {
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(email: email, password: password);
-       //save your deatil in firestore
-   
-
-      // Save user info if it doesn't already exist
-
+      await saveUserDetails(userCredential.user!);
       return userCredential;
     } on FirebaseAuthException catch (e) {
       throw Exception(e.code);
     }
-    
   }
-       Future<void> saveuserdeatils(Usermodel user )async{
-  await _firestore.collection('user').doc(user.id).set({
-    "name":user.name,
-     "followcount":user.folowcount,
-    "profilephoto":user.profilephoto
 
-  });
-
- }
-
-
-
-
-  // Sign out
   Future<void> signOut() async {
-    return await _auth.signOut();
+    await _auth.signOut();
   }
 
-      
-
-
-
-
-
-  // Sign up with email and password
-  Future<UserCredential> signUpWithEmailAndPassword(String email, String password) async {
+  Future<UserCredential> signUpWithEmailAndPassword(String email, String password, String displayName, File imageFile) async {
     try {
+      // Create user with email and password
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
 
-      // Save user info in a separate document
+      // Upload profile image to Firebase Storage
+      final ref = FirebaseStorage.instance.ref().child('profile_images').child('${userCredential.user!.uid}.jpg');
+      await ref.putFile(imageFile);
+      final photoURL = await ref.getDownloadURL();
+
+      // Update user profile with display name and photo URL
+      await userCredential.user!.updateDisplayName(displayName);
+      await userCredential.user!.updatePhotoURL(photoURL);
+      await saveUserDetails(userCredential.user!);
 
       return userCredential;
     } on FirebaseAuthException catch (e) {
@@ -66,25 +48,56 @@ class AuthService {
     }
   }
 
-  // Sign in with Google
+  Future<void> saveUserDetails(User user) async {
+    UserModel userModel = UserModel(
+      uid: user.uid,
+      email: user.email!,
+      displayName: user.displayName ?? '',
+      photoURL: user.photoURL ?? '',
+    );
+
+    DocumentReference userRef = _firestore.collection('userss').doc(user.uid);
+    DocumentSnapshot doc = await userRef.get();
+
+    if (!doc.exists) {
+      await userRef.set(userModel.toMap());
+    }
+  }
+
   Future<UserCredential> signInWithGoogle() async {
     final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
-    final GoogleSignInAuthentication? gAuth = await gUser!.authentication;
+    if (gUser == null) {
+      throw Exception('Google sign-in aborted');
+    }
+    final GoogleSignInAuthentication gAuth = await gUser.authentication;
 
     final credential = GoogleAuthProvider.credential(
-      accessToken: gAuth!.accessToken,
+      accessToken: gAuth.accessToken,
       idToken: gAuth.idToken,
     );
 
-    return await _auth.signInWithCredential(credential);
+    UserCredential userCredential = await _auth.signInWithCredential(credential);
+    await saveUserDetails(userCredential.user!);
+
+    return userCredential;
   }
 
-  // Forgot Password
   Future<void> sendPasswordResetEmail(String email) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);
     } on FirebaseAuthException catch (e) {
       throw Exception(e.code);
     }
+  }
+
+  Future<UserModel?> fetchUserDetails() async {
+    final user = _auth.currentUser;
+    if (user != null) {
+      final userDoc = await _firestore.collection('userss').doc(user.uid).get();
+      if (userDoc.exists) {
+        return UserModel.fromMap(userDoc.data()!);
+      }
+    }
+    return null;
   }
 }

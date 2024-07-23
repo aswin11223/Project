@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_8/model/add_product.dart';
+import 'package:flutter_application_8/provider/cartprovider.dart';
 import 'package:flutter_application_8/view/componenets/back_arrow.dart';
 import 'package:flutter_application_8/view/componenets/product_components.dart/category_text.dart';
 import 'package:flutter_application_8/view/componenets/product_components.dart/details_page.dart';
@@ -64,6 +66,12 @@ class ProductListScreen extends StatelessWidget {
                         price: product.price.toString(),
                         imageurl: product.imageUrl,
                         ontap: (){
+                           final cartProvider = Provider.of<CartProvider>(context, listen: false);
+                           final productoadd=Product(userid: '', id: '', categoryId: '', name: product.name, artistName: product.artistName, description: product.description, imageUrl: product.imageUrl, price:product.price); 
+                           cartProvider.addToCart(productoadd);
+                           ScaffoldMessenger.of(context).showSnackBar(
+                       const SnackBar(content: Text("Added to Cart")),
+          );
 
                         
                         },

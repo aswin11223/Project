@@ -1,6 +1,7 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_8/provider/cartprovider.dart';
+import 'package:flutter_application_8/view/componenets/buy_button.dart';
+import 'package:flutter_application_8/view/screeens/buy_page.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -9,6 +10,14 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
     final User? user = FirebaseAuth.instance.currentUser;
+
+
+    void buy(){
+       Navigator.push(context, MaterialPageRoute(builder: (context)=>BuyPage(totalPrice: cartProvider.totalPrice)));
+    }
+ 
+
+
 
     if (user == null) {
       return Scaffold(
@@ -100,6 +109,8 @@ class CartScreen extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                 BuyButton(ontap: buy
+                      )
                 ],
               ),
             ),

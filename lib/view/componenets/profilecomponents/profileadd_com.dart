@@ -1,13 +1,11 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_application_8/view/componenets/back_arrow.dart';
 
 class Profilecom extends StatelessWidget {
   final File? image;
   final void Function()? ontap;
 
-  Profilecom({
+  const Profilecom({
     required this.image,
     required this.ontap,
     super.key,
@@ -17,8 +15,6 @@ class Profilecom extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-  
-        
         const SizedBox(height: 60),
         Stack(
           children: [
@@ -31,7 +27,6 @@ class Profilecom extends StatelessWidget {
               ),
               child: image != null
                   ? ClipRRect(
-                    
                       borderRadius: BorderRadius.circular(60),
                       child: Image.file(
                         image!,

@@ -9,6 +9,7 @@ class Product {
   final String imageUrl;
   final double price;
   final String userid;
+  int likeCount;
 
   Product({
     required this.userid,
@@ -19,6 +20,7 @@ class Product {
     required this.description,
     required this.imageUrl,
     required this.price,
+    this.likeCount = 0,
   });
 
   // Factory method to create a Product object from a Firestore DocumentSnapshot
@@ -33,6 +35,7 @@ class Product {
       description: data['description'] ?? '',
       imageUrl: data['imageUrl'] ?? '',
       price: (data['price'] ?? 0).toDouble(),
+      likeCount: data['likeCount'] ?? 0,
     );
   }
 
@@ -47,6 +50,7 @@ class Product {
       'description': description,
       'imageUrl': imageUrl,
       'price': price,
+      'likeCount': likeCount,
     };
   }
 }
