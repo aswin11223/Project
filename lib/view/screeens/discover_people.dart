@@ -1,64 +1,37 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_8/provider/order_provider.dart';
+import 'package:flutter_application_8/provider/orderprivedr.dart';
 
-class DiscoverPeopleScreen extends StatefulWidget {
-  DiscoverPeopleScreen({super.key});
+import 'package:provider/provider.dart';
 
-  @override
-  State<DiscoverPeopleScreen> createState() => _DiscoverPeopleScreenState();
-}
-
-class _DiscoverPeopleScreenState extends State<DiscoverPeopleScreen> {
-  FirebaseAuth _auth = FirebaseAuth.instance;
-
+class OrdersPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final orderProvider = Provider.of<OrderProviderr>(context);
+    
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          "Discover People",
-          style: TextStyle(fontWeight: FontWeight.w600),
-        ),
+        title: const Text("Your Orders"),
       ),
-      body: _buildScreen(),
+      body: FutureBuilder(
+        future: orderProvider.fetchOrders(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: Text('empty'));
+          } else {
+            return ListView.builder(
+              itemCount: orderProvider.orders.length,
+              itemBuilder: (context, index) {
+                final order = orderProvider.orders[index];
+                return ListTile(
+                  title: Text("Order ID: ${order.orderId}"),
+                  subtitle: Text("Address: ${order.address}"),
+                );
+              },
+            );
+          }
+        },
+      ),
     );
-  }
-
-  Widget _buildScreen() {
-    return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection('user').snapshots(),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Center(child: Text("Error"));
-        }
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
-        }
-        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return Center(child: Text("No users found"));
-        }
-        return ListView(
-          children: snapshot.data!.docs.map((doc) => _buildScreenItem(doc)).toList(),
-        );
-      },
-    );
-  }
-
-  Widget _buildScreenItem(DocumentSnapshot document) {
-    Map<String, dynamic>? data = document.data() as Map<String, dynamic>?;
-    if (data == null) {
-      return Container(); // or handle the null data case accordingly
-    }
-    String? email = data["email"] as String?;
-    if (email != null && _auth.currentUser?.email != email) {
-      return ListTile(
-        title: Text(email),
-       
-      );
-    } else {
-      return Container();
-    }
   }
 }

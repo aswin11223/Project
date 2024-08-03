@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_application_8/model/order_momdel.dart';
+import 'package:flutter_application_8/provider/Location_provider.dart';
 import 'package:flutter_application_8/provider/cartprovider.dart';
 import 'package:flutter_application_8/provider/locationprovider.dart';
+import 'package:flutter_application_8/provider/order_provider.dart';
+import 'package:flutter_application_8/view/componenets/buy_pagecomponent/Buy_pagecomp.dart';
+import 'package:flutter_application_8/view/componenets/my_textfield.dart';
 import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:flutter_application_8/provider/order_provider.dart';
-
 
 class BuyPage extends StatelessWidget {
   final double totalPrice;
+  final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
   final _addressController = TextEditingController();
+  final _pincodeController = TextEditingController();
+  final _stateController = TextEditingController();
   final Razorpay _razorpay = Razorpay();
 
   BuyPage({Key? key, required this.totalPrice}) : super(key: key) {
@@ -28,6 +34,8 @@ class BuyPage extends StatelessWidget {
     final locationProvider = Provider.of<LocationProvider>(context, listen: false);
 
     final order = Order(
+      pincode: _pincodeController.text,
+      state: _stateController.text,
       items: cartProvider.items,
       totalPrice: cartProvider.totalPrice,
       name: _nameController.text,
@@ -60,7 +68,7 @@ class BuyPage extends StatelessWidget {
       'description': 'Payment for items in cart',
       'prefill': {
         'contact': _phoneController.text,
-        'email': _emailController.text,
+        'email': _emailController.text
       },
       'external': {
         'wallets': ['paytm']
@@ -99,7 +107,6 @@ class BuyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
-    final locationProvider = Provider.of<LocationProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -107,74 +114,104 @@ class BuyPage extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                itemCount: cartProvider.items.length,
-                itemBuilder: (context, index) {
-                  final item = cartProvider.items[index];
-                  return ListTile(
-                    leading: Image.network(item.imageUrl),
-                    title: Text(item.artistName),
-                    subtitle: Text(
-                        'Art Name: ${item.name} - Price: \$${item.price.toStringAsFixed(2)}'),
-                  );
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  itemCount: cartProvider.items.length,
+                  itemBuilder: (context, index) {
+                    final item = cartProvider.items[index];
+                    return ListTile(
+                      leading: Image.network(item.imageUrl),
+                      title: Text(item.artistName),
+                      subtitle: Text('Art Name: ${item.name} - Price: \$${item.price.toStringAsFixed(2)}'),
+                    );
+                  },
+                ),
+              ),
+              Text('Total Price: \$${cartProvider.totalPrice.toStringAsFixed(2)}'),
+              BuyField(
+                hinttexxt: 'Name',
+                obs: false,
+                textcont: _nameController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your name';
+                  }
+                  return null;
                 },
               ),
-            ),
-            Text('Total Price: \$${cartProvider.totalPrice.toStringAsFixed(2)}'),
-            TextField(
-              controller: _nameController,
-              decoration: const InputDecoration(labelText: 'Name'),
-            ),
-            TextField(
-              controller: _phoneController,
-              decoration: const InputDecoration(labelText: 'Phone Number'),
-            ),
-            TextField(
-              controller: _emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
-            ),
-            TextField(
-              controller: _addressController,
-              decoration: const InputDecoration(labelText: 'Address'),
-            ),
-            TextField(
-              controller: TextEditingController(text: locationProvider.location),
-              decoration: const InputDecoration(labelText: 'Location'),
-              readOnly: true,
-            ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      locationProvider.getCurrentLocation();
-                    },
-                    child: const Text('Get Current Location'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      _openMap(context);
-                    },
-                    child: const Text('Pick Location on Map'),
-                  ),
-                ],
+              BuyField(
+                hinttexxt: 'Phone Number',
+                obs: false,
+                textcont: _phoneController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your phone number';
+                  }
+                  return null;
+                },
               ),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                _openCheckout(context);
-              },
-              child: const Text('Place Order'),
-            ),
-          ],
+              BuyField(
+                hinttexxt: 'Email',
+                obs: false,
+                textcont: _emailController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your email';
+                  }
+                  return null;
+                },
+              ),
+              BuyField(
+                hinttexxt: 'Address',
+                obs: false,
+                textcont: _addressController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your address';
+                  }
+                  return null;
+                },
+              ),
+              BuyField(
+                hinttexxt: 'State',
+                obs: false,
+                textcont: _stateController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your state';
+                  }
+                  return null;
+                },
+              ),
+              BuyField(
+                hinttexxt: 'Pincode',
+                obs: false,
+                textcont: _pincodeController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your pincode';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _formKey.currentState != null && _formKey.currentState!.validate()
+                    ? () {
+                        _openCheckout(context);
+                      }
+                    : null,
+                child: const Text('Place Order'),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
+  
 }

@@ -4,8 +4,10 @@ import 'package:flutter_application_8/provider/themeprovider/themeprovider.dart'
 import 'package:flutter_application_8/view/componenets/settingscomponents/cupertino_swithch.dart';
 import 'package:flutter_application_8/view/componenets/settingscomponents/setting_image.dart';
 import 'package:flutter_application_8/view/componenets/settingscomponents/setting_pages.dart';
+import 'package:flutter_application_8/view/screeens/adminpanel/adminlogin.dart';
 import 'package:flutter_application_8/view/screeens/pages/About_page.dart';
 import 'package:flutter_application_8/view/screeens/pages/terms_condition.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 class Setting extends StatelessWidget {
@@ -46,7 +48,12 @@ class Setting extends StatelessWidget {
          const SizedBox(height: 10,),
          SettingPages(text: "About Our App", ontap: (){
           Navigator.push(context, MaterialPageRoute(builder: (context)=>AboutPage()));
-         },icon: const Icon(Icons.person_2_rounded),)
+         },icon: const Icon(Icons.person_2_rounded),),
+         GestureDetector(child: Text('Admin'),
+            onTap: () {
+              Navigator.push(context, PageTransition(child: Adminpanel(), type:PageTransitionType.bottomToTop));
+            },
+            )
         ],
       ),
     );

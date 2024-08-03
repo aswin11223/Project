@@ -19,7 +19,7 @@ class AuthService {
       await saveUserDetails(userCredential.user!);
       return userCredential;
     } on FirebaseAuthException catch (e) {
-      throw Exception(e.code);
+      throw Exception(e.message ?? 'Error signing in');
     }
   }
 
@@ -29,22 +29,19 @@ class AuthService {
 
   Future<UserCredential> signUpWithEmailAndPassword(String email, String password, String displayName, File imageFile) async {
     try {
-      // Create user with email and password
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
 
-      // Upload profile image to Firebase Storage
       final ref = FirebaseStorage.instance.ref().child('profile_images').child('${userCredential.user!.uid}.jpg');
       await ref.putFile(imageFile);
       final photoURL = await ref.getDownloadURL();
 
-      // Update user profile with display name and photo URL
       await userCredential.user!.updateDisplayName(displayName);
       await userCredential.user!.updatePhotoURL(photoURL);
       await saveUserDetails(userCredential.user!);
 
       return userCredential;
     } on FirebaseAuthException catch (e) {
-      throw Exception(e.code);
+      throw Exception(e.message ?? 'Error signing up');
     }
   }
 
@@ -86,7 +83,7 @@ class AuthService {
     try {
       await _auth.sendPasswordResetEmail(email: email);
     } on FirebaseAuthException catch (e) {
-      throw Exception(e.code);
+      throw Exception(e.message ?? 'Error sending password reset email');
     }
   }
 
@@ -100,4 +97,47 @@ class AuthService {
     }
     return null;
   }
+  Future<void> deleteUserAccount(String uid) async {
+  try {
+    // Reference to the user document in Firestore
+    DocumentReference userRef = _firestore.collection('userss').doc(uid);
+    DocumentSnapshot userDoc = await userRef.get();
+    
+    if (!userDoc.exists) {
+      throw Exception('User document not found in Firestore');
+    }
+
+    // Delete user data from Firestore
+    await userRef.delete();
+
+    // Delete user profile image from Firebase Storage
+    final ref = FirebaseStorage.instance.ref().child('profile_images').child('$uid.jpg');
+    
+    try {
+      await ref.delete();
+    } catch (e) {
+      print('Profile image not found or could not be deleted: $e');
+      // Optionally, continue or throw an exception if profile image deletion is critical
+    }
+
+    // Delete user account from Firebase Authentication
+    User? currentUser = _auth.currentUser;
+    if (currentUser != null) {
+      // Check if the current user is the one being deleted
+      if (currentUser.uid == uid) {
+        await currentUser.delete();
+      } else {
+        throw Exception('The account to be deleted does not match the currently signed-in user');
+      }
+    } else {
+      throw Exception('No user is currently signed in');
+    }
+  } on FirebaseAuthException catch (e) {
+    throw Exception('FirebaseAuthException: ${e.message}');
+  } catch (e) {
+    throw Exception('Error deleting user account: $e');
+  }
+}
+
+
 }

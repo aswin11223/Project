@@ -10,8 +10,12 @@ class Order {
   final String address;
   final String location;
   final String id;
+  final String pincode;
+  final String state; 
 
   Order({
+    required this.pincode,
+    required this.state,
     required this.items,
     required this.totalPrice,
     required this.name,

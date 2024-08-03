@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -57,6 +56,7 @@ class CategoryProvider with ChangeNotifier {
       imageUrl: imageUrl,
       price: product.price,
       userid: FirebaseAuth.instance.currentUser!.uid,
+      likeCount: 0,
     );
 
     await FirebaseFirestore.instance.collection('products').add(newProduct.toMap());
@@ -70,18 +70,33 @@ class CategoryProvider with ChangeNotifier {
   List<Product> productsByUser(String userId) {
     return _products.where((product) => product.userid == userId).toList();
   }
+Future<void> deleteProduct(String productId) async {
+    try {
+      // Fetch the product document
+      final productDoc = await FirebaseFirestore.instance.collection('products').doc(productId).get();
+      final productData = productDoc.data();
+      if (productData != null) {
+        final imageUrl = productData['imageUrl'];
+        final categoryId = productData['categoryId'];
 
-  Future<void> deleteProduct(String productId) async {
-    await FirebaseFirestore.instance.collection('products').doc(productId).delete();
-    fetchProducts();
+        // Delete the product document
+        await FirebaseFirestore.instance.collection('products').doc(productId).delete();
+
+        // Delete the image from Firebase Storage
+        final storageRef = FirebaseStorage.instance.refFromURL(imageUrl);
+        await storageRef.delete();
+
+        // Optionally remove the product reference from the category if needed
+        // await FirebaseFirestore.instance.collection('categories').doc(categoryId).update({
+        //   'products': FieldValue.arrayRemove([productId])
+        // });
+
+        // Refresh the product list
+        await fetchProducts();
+      }
+    } catch (e) {
+      throw Exception('Failed to delete product: $e');
+    }
   }
-
-  Future<void> refreshCategories() async {
-    await fetchCategories();
-  }
-
-
-
 }
-
 

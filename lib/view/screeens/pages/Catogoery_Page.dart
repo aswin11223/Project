@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_8/view/componenets/search_bar.dart';
+import 'package:flutter_application_8/view/screeens/pages/add_product.dart';
 import 'package:flutter_application_8/view/screeens/pages/product_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -7,11 +8,22 @@ import 'package:flutter_application_8/provider/category_provider.dart';
 
 
 class CategoryPage extends StatelessWidget {
-  const CategoryPage({Key? key}) : super(key: key);
+  const CategoryPage({Key? key}) ;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.brown.shade600,
+        shape: const CircleBorder(),
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => AddProductScreen()));
+          // Your code for the FloatingActionButton press
+        },
+        child: const Icon(Icons.add),
+      ),
+
       body: Column(
         
         children: [

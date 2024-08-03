@@ -182,6 +182,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   SizedBox(height: spacing),
                   GoogleButton(textt: "Sign Up", ontapp: googleSign),
+                  
+Text('admin')
+
                 ],
               );
             },

@@ -44,6 +44,7 @@ class AddProductProvider with ChangeNotifier {
         userid:FirebaseAuth.instance.currentUser!.uid,
         id: DateTime.now().toString(),
         categoryId: _selectedCategoryId!,
+        
         name: nameController.text,
         artistName: artistNameController.text,
         description: descriptionController.text,

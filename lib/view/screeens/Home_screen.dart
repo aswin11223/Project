@@ -16,26 +16,26 @@ import 'package:provider/provider.dart';
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
 
-  final FirebaseAuth auth= FirebaseAuth.instance;
-  
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
-  final List<Widget> pages = [CategoryPage(), DiscoverPeopleScreen(),CartScreen(),ProfilePage(usere:FirebaseAuth.instance.currentUser!.displayName!,email:FirebaseAuth.instance.currentUser!.email! ,image:FirebaseAuth.instance.currentUser!.photoURL! ,)];
+  final List<Widget> pages = [
+    const CategoryPage(),
+    
+    CartScreen(),
+    ProfilePage(
+      usere: FirebaseAuth.instance.currentUser!.displayName!,
+      email: FirebaseAuth.instance.currentUser!.email!,
+      image: FirebaseAuth.instance.currentUser!.photoURL!,
+    )
+  ];
 
   @override
   Widget build(BuildContext context) {
     final navProvider = Provider.of<NavProvider>(context);
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.brown.shade600,
-        shape: const CircleBorder(),
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>AddProductScreen()));
-          // Your code for the FloatingActionButton press
-        },
-        child: const Icon(Icons.add),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      
+
       bottomNavigationBar: BottomNav(
         onTap: navProvider.setIndex,
         currentIndex: navProvider.selectedIndex,

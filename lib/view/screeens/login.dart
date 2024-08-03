@@ -4,6 +4,8 @@ import 'package:flutter_application_8/view/componenets/googl_button.dart';
 
 import 'package:flutter_application_8/view/componenets/my_button.dart';
 import 'package:flutter_application_8/view/componenets/my_textfield.dart';
+import 'package:flutter_application_8/view/screeens/adminpanel/adminlogin.dart';
+import 'package:page_transition/page_transition.dart';
 
 class Login extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
@@ -30,8 +32,7 @@ class Login extends StatelessWidget {
     try {
       await _authService.signInWithGoogle();
     } catch (e) {
-      showDialog(
-        context: context,
+      showDialog(context: context,
         builder: (context) => const AlertDialog(
           title: Text("Error signing in with Google"),
         ),
@@ -43,7 +44,7 @@ class Login extends StatelessWidget {
     try {
       await _authService.sendPasswordResetEmail(emailController.text);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Password reset email sent')),
+        const SnackBar(content: Text('Password reset email sent')),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -138,7 +139,8 @@ class Login extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 20),
-            GoogleButton(textt: "Google", ontapp: () => googleSignIn(context))
+            GoogleButton(textt: "Google", ontapp: () => googleSignIn(context)),
+            
           ],
         ),
       ),

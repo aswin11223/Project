@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_8/provider/cartprovider.dart';
 import 'package:flutter_application_8/view/componenets/buy_button.dart';
 import 'package:flutter_application_8/view/screeens/buy_page.dart';
+import 'package:flutter_application_8/view/screeens/pages/buy_pages/order%20sumary.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -13,7 +14,7 @@ class CartScreen extends StatelessWidget {
 
 
     void buy(){
-       Navigator.push(context, MaterialPageRoute(builder: (context)=>BuyPage(totalPrice: cartProvider.totalPrice)));
+       Navigator.push(context, MaterialPageRoute(builder: (context)=>OrderSummary(totalPrice: cartProvider.totalPrice,)),);
     }
  
 

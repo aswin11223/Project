@@ -5,12 +5,14 @@ class Textfieldd extends StatelessWidget {
   final bool obs;
   final TextEditingController textcont;
   
+  
 
   Textfieldd({
     super.key,
     required this.hinttexxt,
     required this.obs,
     required this.textcont,
+    
   });
 
   @override
@@ -23,6 +25,7 @@ class Textfieldd extends StatelessWidget {
       child: Container(
         width: screenWidth * 0.8, // 80% of the screen width
         child: TextField(
+          
           controller: textcont,
           obscureText: obs,
           decoration: InputDecoration(

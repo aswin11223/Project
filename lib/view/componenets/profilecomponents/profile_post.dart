@@ -1,67 +1,47 @@
 import 'package:flutter/material.dart';
 
 class ProfilePost extends StatelessWidget {
-  final String name;
-  final String price;
-  final String imageurl;
-  final VoidCallback ontap;
-  final VoidCallback ontapp;
-  final VoidCallback onLike;
-  final VoidCallback onDelete;
   final String id;
-  final bool isLiked; // Add this field to indicate the like state
-  final int likeCount; // Add this field to indicate the like count
+  final String imageurl;
+  final VoidCallback onDelete;
 
-  ProfilePost({
+  const ProfilePost({
+    Key? key,
     required this.id,
-    required this.name,
-    required this.price,
     required this.imageurl,
-    required this.ontap,
-    required this.ontapp,
-    required this.onLike,
     required this.onDelete,
-    required this.isLiked, // Include in constructor
-    required this.likeCount, // Include in constructor
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Image.network(imageurl, fit: BoxFit.cover, height: 100),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(name, style: TextStyle(fontWeight: FontWeight.bold)),
-                Text('\$$price'),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        IconButton(
-                          icon: Icon(
-                            isLiked ? Icons.favorite : Icons.favorite_border,
-                            color: isLiked ? Colors.red : Colors.grey,
-                          ),
-                          onPressed: onLike,
-                        ),
-                        Text('$likeCount'),
-                      ],
+          Image.network(imageurl),
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () async {
+              final confirmed = await showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: Text('Confirm Deletion'),
+                  content: Text('Are you sure you want to delete this product?'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, false),
+                      child: Text('Cancel'),
                     ),
-                    IconButton(
-                      icon: Icon(Icons.delete),
-                      onPressed: onDelete,
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, true),
+                      child: Text('Delete'),
                     ),
                   ],
                 ),
-              ],
-            ),
+              );
+              if (confirmed) {
+                onDelete();
+              }
+            },
           ),
         ],
       ),

@@ -6,6 +6,6 @@ class cat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(text,style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 20),);
+    return Text(text,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),);
   }
 }

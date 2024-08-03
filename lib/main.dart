@@ -5,6 +5,17 @@ import 'package:flutter_application_8/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(const IntroPage());            
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    print("Firebase initialized successfully");
+  } catch (e) {
+    Text(e.toString());
+    print(e.toString());
+  }
+
+  runApp(
+    const IntroPage(),
+  );
 }
