@@ -18,7 +18,7 @@ class Adminpanel extends StatelessWidget {
       await adminAuth.signInWithEmailAndPassword(_email.text, _password.text);
       Navigator.pushReplacement(
         context,
-        PageTransition(child:DashBoard(), type: PageTransitionType.rightToLeft),
+        PageTransition(child: DashBoard(), type: PageTransitionType.rightToLeft),
       );
     } catch (e) {
       // Show an error message if login fails

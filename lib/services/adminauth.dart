@@ -27,7 +27,9 @@ class AdminAuth {
     }
   }
 
-  Future<void> signOut() async {
+  Future<void> logout() async {
     await _adminAuth.signOut();
   }
+   
+
 }

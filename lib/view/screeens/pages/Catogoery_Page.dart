@@ -1,45 +1,73 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_8/view/componenets/search_bar.dart';
 import 'package:flutter_application_8/view/screeens/pages/add_product.dart';
 import 'package:flutter_application_8/view/screeens/pages/product_screen.dart';
+
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_application_8/provider/category_provider.dart';
 
+class CategoryPage extends StatefulWidget {
+  const CategoryPage({Key? key}) : super(key: key);
 
-class CategoryPage extends StatelessWidget {
-  const CategoryPage({Key? key}) ;
+  @override
+  _CategoryPageState createState() => _CategoryPageState();
+}
+
+class _CategoryPageState extends State<CategoryPage> {
+  final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController.addListener(() {
+      Provider.of<CategoryProvider>(context, listen: false)
+          .searchCategory(_searchController.text);
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.brown.shade600,
         shape: const CircleBorder(),
         onPressed: () {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => AddProductScreen()));
-          // Your code for the FloatingActionButton press
         },
         child: const Icon(Icons.add),
       ),
-
       body: Column(
-        
         children: [
           const SizedBox(height: 60),
-          Textfielddd(hinttexxt: "searchbar"),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: TextField(
+              controller: _searchController,
+              decoration: const InputDecoration(
+                hintText: "Search categories",
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.search),
+              ),
+            ),
+          ),
           const SizedBox(height: 5),
-          const Row(
-            children: [
-              Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Text(
+          const Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Row(
+              children: [
+                Text(
                   "Categories",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           const SizedBox(height: 5),
           Expanded(
@@ -89,7 +117,7 @@ floatingActionButton: FloatingActionButton(
                                   ),
                                   errorWidget: (context, url, error) =>
                                       const Icon(Icons.error),
-                                  height: 120, // Adjusted height to fit the new item height
+                                  height: 120,
                                   width: double.infinity,
                                   fit: BoxFit.cover,
                                 ),

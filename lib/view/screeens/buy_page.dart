@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_8/model/order_momdel.dart';
 import 'package:flutter_application_8/provider/Location_provider.dart';
 import 'package:flutter_application_8/provider/cartprovider.dart';
-import 'package:flutter_application_8/provider/locationprovider.dart';
+
 import 'package:flutter_application_8/provider/order_provider.dart';
 import 'package:flutter_application_8/view/componenets/buy_pagecomponent/Buy_pagecomp.dart';
 import 'package:flutter_application_8/view/componenets/my_textfield.dart';

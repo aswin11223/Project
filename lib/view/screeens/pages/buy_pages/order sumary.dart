@@ -23,12 +23,12 @@ class OrderSummary extends StatelessWidget {
   void _handlePaymentSuccess(BuildContext context, PaymentSuccessResponse response) {
     final address = _addressNotifier.value;
     final orderId = response.paymentId!; // Assuming payment ID as order ID for this example
-
-    final order = orderr(orderId: orderId, address: address);
+    final phoneno=_phoneNotifier.value;
+    final order = orderr(orderId: orderId, address: address,phonenum: phoneno,price: totalPrice.toString());
     Provider.of<OrderProviderr>(context, listen: false).addOrder(order);
 
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => OrderStatusPage(orderId: orderId, address: address),
+      builder: (context) => OrderStatusPage(orderId: orderId, address: address,phoneno: _phoneNotifier.toString(),),
     ));
   }
 

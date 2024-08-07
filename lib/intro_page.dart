@@ -5,9 +5,11 @@ import 'package:flutter_application_8/provider/addprovider.dart';
 import 'package:flutter_application_8/provider/auth/authgate.dart';
 import 'package:flutter_application_8/provider/cartprovider.dart';
 import 'package:flutter_application_8/provider/category_provider.dart';
-import 'package:flutter_application_8/provider/locationprovider.dart';
+import 'package:flutter_application_8/provider/formstate_provider.dart';
+
 
 import 'package:flutter_application_8/provider/nav_provider.dart';
+import 'package:flutter_application_8/provider/notification_provider.dart';
 import 'package:flutter_application_8/provider/order_provider.dart';
 import 'package:flutter_application_8/provider/orderprivedr.dart';
 import 'package:flutter_application_8/provider/profileprovider/like_provider.dart';
@@ -34,6 +36,8 @@ class IntroPage extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => Themeprovider()),
          ChangeNotifierProvider(create:(_) => LocationProvider()),
          ChangeNotifierProvider(create:(_) => OrderProviderr()),
+            ChangeNotifierProvider(create:(_) => NotificationProvider()),
+             ChangeNotifierProvider(create:(_) => FormStateProvider()),
       ],
       child: Consumer<Themeprovider>(
         builder: (context, themeProvider, child) {

@@ -123,12 +123,15 @@ class DetailProduct extends StatelessWidget {
                                     color: Colors.black,
                                   ),
                                   child: Center(
-                                    child: Text(
-                                      buttonText,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 18,
+                                    child: GestureDetector(
+                                      onTap: onTap,
+                                      child: Text(
+                                        buttonText,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 18,
+                                        ),
                                       ),
                                     ),
                                   ),

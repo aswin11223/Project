@@ -21,25 +21,45 @@ class OrderProviderr with ChangeNotifier {
     }
     notifyListeners();
   }
+
+  Future<void> removeOrder(String orderId) async {
+    final orderDoc = await FirebaseFirestore.instance
+        .collection('orders')
+        .where('orderId', isEqualTo: orderId)
+        .get();
+    if (orderDoc.docs.isNotEmpty) {
+      await FirebaseFirestore.instance
+          .collection('orders')
+          .doc(orderDoc.docs.first.id)
+          .delete();
+      _orders.removeWhere((order) => order.orderId == orderId);
+      notifyListeners();
+    }
+  }
 }
 
 class orderr {
   final String orderId;
   final String address;
+  final String phonenum;
+  final String price;
 
-  orderr({required this.orderId, required this.address});
+  orderr({required this.orderId, required this.address, required this.phonenum,required this.price});
 
   Map<String, dynamic> toMap() {
     return {
       'orderId': orderId,
       'address': address,
+      'phoneno': phonenum,
     };
   }
 
   static orderr fromDocument(DocumentSnapshot doc) {
     return orderr(
-      orderId: doc['orderId'],
-      address: doc['address'],
+       price: doc['price'] ?? '',
+      orderId: doc['orderId'] ?? '', // Handle null values
+      address: doc['address'] ?? '', // Handle null values
+      phonenum: doc['phoneno'] ?? '', // Handle null values
     );
   }
 }

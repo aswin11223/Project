@@ -22,6 +22,10 @@ class BottomNav extends StatelessWidget {
           icon: Icon(Icons.person, color: Colors.brown),
           label: 'Profile',
         ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.message, color: Colors.brown),
+          label: 'notification',
+        ),
       ],
       currentIndex: currentIndex,
       selectedItemColor: Colors.brown.shade700,

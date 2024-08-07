@@ -10,6 +10,7 @@ import 'package:flutter_application_8/view/screeens/Profile_page.dart';
 import 'package:flutter_application_8/view/screeens/pages/Catogoery_Page.dart';
 import 'package:flutter_application_8/view/screeens/pages/add_product.dart';
 import 'package:flutter_application_8/view/screeens/discover_people.dart';
+import 'package:flutter_application_8/view/screeens/pages/notification_page.dart';
 
 import 'package:provider/provider.dart';
 
@@ -26,7 +27,9 @@ class HomeScreen extends StatelessWidget {
       usere: FirebaseAuth.instance.currentUser!.displayName!,
       email: FirebaseAuth.instance.currentUser!.email!,
       image: FirebaseAuth.instance.currentUser!.photoURL!,
-    )
+    ),
+
+    NotificationsPage(userId: FirebaseAuth.instance.currentUser!.uid,)
   ];
 
   @override

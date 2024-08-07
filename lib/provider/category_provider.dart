@@ -8,9 +8,10 @@ import 'package:flutter_application_8/model/category.dart';
 
 class CategoryProvider with ChangeNotifier {
   List<Category> _categories = [];
+  List<Category> _filteredCategories = [];
   List<Product> _products = [];
 
-  List<Category> get categories => _categories;
+  List<Category> get categories => _filteredCategories.isEmpty ? _categories : _filteredCategories;
   List<Product> get products => _products;
 
   CategoryProvider() {
@@ -25,6 +26,7 @@ class CategoryProvider with ChangeNotifier {
       name: doc['name'],
       imageUrl: doc['imageUrl'],
     )).toList();
+    _filteredCategories = _categories; // Initialize filtered categories
     notifyListeners();
   }
 
@@ -34,6 +36,17 @@ class CategoryProvider with ChangeNotifier {
       'imageUrl': imageUrl,
     });
     fetchCategories();
+  }
+
+  void searchCategory(String query) {
+    if (query.isEmpty) {
+      _filteredCategories = _categories;
+    } else {
+      _filteredCategories = _categories
+          .where((category) => category.name.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    }
+    notifyListeners();
   }
 
   Future<void> fetchProducts() async {
@@ -70,7 +83,8 @@ class CategoryProvider with ChangeNotifier {
   List<Product> productsByUser(String userId) {
     return _products.where((product) => product.userid == userId).toList();
   }
-Future<void> deleteProduct(String productId) async {
+
+  Future<void> deleteProduct(String productId) async {
     try {
       // Fetch the product document
       final productDoc = await FirebaseFirestore.instance.collection('products').doc(productId).get();
@@ -86,17 +100,12 @@ Future<void> deleteProduct(String productId) async {
         final storageRef = FirebaseStorage.instance.refFromURL(imageUrl);
         await storageRef.delete();
 
-        // Optionally remove the product reference from the category if needed
-        // await FirebaseFirestore.instance.collection('categories').doc(categoryId).update({
-        //   'products': FieldValue.arrayRemove([productId])
-        // });
-
         // Refresh the product list
         await fetchProducts();
       }
     } catch (e) {
       throw Exception('Failed to delete product: $e');
     }
+    notifyListeners();
   }
 }
-
