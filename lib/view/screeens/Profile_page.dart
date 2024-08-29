@@ -99,40 +99,37 @@ class ProfilePage extends StatelessWidget {
           ),
           // List of User's Products
           Expanded(
-            child: userProducts.isEmpty
-                ? const Center(
-                    child: Text(
-                      'No posts available',
-                      style: TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.w600),
-                    ),
-                  )
-                : ListView.builder(
-                  
-                    itemCount: userProducts.length,
-                    itemBuilder: (context, index) {
-                      final product = userProducts[index];
-                      return ProfilePost(
-                        id: product.id,
-                        imageUrl: product.imageUrl,
-                        onDelete: () async {
-                          try {
-                            await categoryProvider.deleteProduct(product.id,);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text('Product deleted successfully')),
-                            );
-                          } catch (e) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                  content: Text('Error deleting product: $e')),
-                            );
-                          }
-                        },
-                      );
-                    },
-                  ),
+  child: userProducts.isEmpty
+      ? const Center(
+          child: Text(
+            'No posts available',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
           ),
+        )
+      : ListView.builder(
+          itemCount: userProducts.length,
+          itemBuilder: (context, index) {
+            final product = userProducts[index];
+            return ProfilePost(
+              imageUrl: product.imageUrl,
+              onDelete: () async {
+                try {
+                  await categoryProvider.deleteProduct(product.id);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        content: Text('Product deleted successfully')),
+                  );
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Error deleting product: $e')),
+                  );
+                }
+              },
+            );
+          },
+        ),
+)
+
         ],
       ),
     );

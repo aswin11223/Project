@@ -85,15 +85,21 @@ class CategoryProvider with ChangeNotifier {
   }
 
   Future<void> deleteProduct(String productId) async {
-    try {
-      // Fetch the product document
-      final productDoc = await FirebaseFirestore.instance.collection('products').doc(productId).get();
-      final productData = productDoc.data();
-      if (productData != null) {
-        final imageUrl = productData['imageUrl'];
-        final categoryId = productData['categoryId'];
+  try {
+    // Fetch the product document using the Firestore document ID
+    final productDoc = await FirebaseFirestore.instance.collection('products').doc(productId).get();
+    final productData = productDoc.data();
 
-        // Delete the product document
+    if (productData != null) {
+      final imageUrl = productData['imageUrl'];
+      final productUserId = productData['userid'];
+
+      // Get the current user's ID
+      final currentUserId = FirebaseAuth.instance.currentUser!.uid;
+
+      // Check if the current user is the owner of the product
+      if (productUserId == currentUserId) {
+        // Delete the product document using the correct Firestore document ID
         await FirebaseFirestore.instance.collection('products').doc(productId).delete();
 
         // Delete the image from Firebase Storage
@@ -102,10 +108,16 @@ class CategoryProvider with ChangeNotifier {
 
         // Refresh the product list
         await fetchProducts();
+        notifyListeners();
+      } else {
+        // If the user is not the owner, you can handle it here
+        throw Exception('You do not have permission to delete this product.');
       }
-    } catch (e) {
-      throw Exception('Failed to delete product: $e');
     }
-    notifyListeners();
+  } catch (e) {
+    throw Exception('Failed to delete product: $e');
   }
+}
+
+
 }

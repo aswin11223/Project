@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_8/provider/auth/authservice.dart';
 import 'package:flutter_application_8/provider/orderprivedr.dart';
 import 'package:flutter_application_8/services/adminauth.dart';
-import 'package:flutter_application_8/view/screeens/adminpanel/add_user_profile.dart';
+import 'package:flutter_application_8/view/screeens/adminpanel/Admin_Order_manage.dart';
 import 'package:flutter_application_8/view/screeens/adminpanel/addcategory.dart';
 import 'package:flutter_application_8/view/screeens/adminpanel/users_list.dart';
 

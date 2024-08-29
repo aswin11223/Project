@@ -11,7 +11,7 @@ class NotificationsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<NotificationProvider>(context, listen: false).fetchNotifications(userId);
+  
 
     return Scaffold(
       appBar: AppBar(
@@ -39,6 +39,9 @@ class NotificationsPage extends StatelessWidget {
               return ListTile(
                 title: Text(message),
                 subtitle: Text(timestamp),
+                 leading: IconButton(onPressed: (){
+
+                 }, icon: Icon(Icons.remove))
               );
             },
           );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_application_8/model/order_momdel.dart';
-import 'package:flutter_application_8/provider/Location_provider.dart';
+
 import 'package:flutter_application_8/provider/cartprovider.dart';
 
 import 'package:flutter_application_8/provider/order_provider.dart';
@@ -31,7 +31,7 @@ class BuyPage extends StatelessWidget {
   void _handlePaymentSuccess(PaymentSuccessResponse response, BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
     final orderProvider = Provider.of<OrderProvider>(context, listen: false);
-    final locationProvider = Provider.of<LocationProvider>(context, listen: false);
+    
 
     final order = Order(
       pincode: _pincodeController.text,
@@ -42,7 +42,7 @@ class BuyPage extends StatelessWidget {
       phone: _phoneController.text,
       email: _emailController.text,
       address: _addressController.text,
-      location: locationProvider.location,
+     
       id: response.orderId ?? '',
     );
     orderProvider.placeOrder(order);
@@ -78,31 +78,7 @@ class BuyPage extends StatelessWidget {
     _razorpay.open(options);
   }
 
-  void _openMap(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return SizedBox(
-          height: 400,
-          child: Consumer<LocationProvider>(
-            builder: (context, locationProvider, child) {
-              return GoogleMap(
-                initialCameraPosition: CameraPosition(
-                  target: locationProvider.pickedLocation ?? LatLng(37.7749, -122.4194),
-                  zoom: 12,
-                ),
-                onMapCreated: (controller) {},
-                onTap: (LatLng location) {
-                  locationProvider.pickLocation(location);
-                  Navigator.of(context).pop();
-                },
-              );
-            },
-          ),
-        );
-      },
-    );
-  }
+ 
 
   @override
   Widget build(BuildContext context) {

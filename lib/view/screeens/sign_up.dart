@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_8/view/screeens/Home_screen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_application_8/provider/auth/authservice.dart';
 import 'package:flutter_application_8/view/componenets/googl_button.dart';
@@ -40,49 +41,71 @@ class _RegisterPageState extends State<RegisterPage> {
     });
   }
 
-  void register(BuildContext context) async {
-    final _auth = AuthService();
+ void register(BuildContext context) async {
+  final _auth = AuthService();
 
-    if (nameController.text.isEmpty ||
-        emailController.text.isEmpty ||
-        passwordController.text.isEmpty ||
-        confirmPasswordController.text.isEmpty ||
-        _image == null) {
-      showDialog(
-          context: context,
-          builder: (context) => const AlertDialog(
-                title: Text('Error'),
-                content: Text('Please fill all fields and select an image.'),
-              ));
-      return;
-    }
-    if (passwordController.text == confirmPasswordController.text) {
-      try {
-        UserCredential userCredential = await _auth.signUpWithEmailAndPassword(
-          emailController.text,
-          passwordController.text,
-          nameController.text,
-          _image!,
+  // Check for empty fields or null image
+  if (nameController.text.isEmpty ||
+      emailController.text.isEmpty ||
+      passwordController.text.isEmpty ||
+      confirmPasswordController.text.isEmpty ||
+      _image == null) {
+    showDialog(
+        context: context,
+        builder: (context) => const AlertDialog(
+              title: Text('Error'),
+              content: Text('Please fill all fields and select an image.'),
+            ));
+    return;
+  }
+
+  // Check if passwords match
+  if (passwordController.text != confirmPasswordController.text) {
+    showDialog(
+        context: context,
+        builder: (context) => const AlertDialog(
+              title: Text("Passwords don't match"),
+            ));
+    return;
+  }
+
+  try {
+    // Attempt to sign up
+    UserCredential? userCredential = await _auth.signUpWithEmailAndPassword(
+      emailController.text,
+      passwordController.text,
+      nameController.text,
+      _image!,
+    );
+
+    // Check if sign up was successful
+    if (userCredential != null) {
+      // Fetch current user and navigate to home screen
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
         );
-
-        // Navigate to the next screen or show success message
-        Navigator.pushReplacementNamed(context, '/profile');
-      } catch (e) {
-        showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-                  title: Text('Error'),
-                  content: Text(e.toString()),
-                ));
+      } else {
+        throw FirebaseAuthException(
+            code: 'user-null', message: 'Failed to retrieve user after sign up.');
       }
     } else {
-      showDialog(
-          context: context,
-          builder: (context) => const AlertDialog(
-                title: Text("Passwords don't match"),
-              ));
+      throw FirebaseAuthException(
+          code: 'signup-failed', message: 'Sign up failed for unknown reasons.');
     }
+  } catch (e) {
+    // Display error message
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text('Error'),
+              content: Text(e.toString()),
+            ));
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -183,7 +206,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   SizedBox(height: spacing),
                   GoogleButton(textt: "Sign Up", ontapp: googleSign),
                   
-Text('admin')
+              Text('admin')
 
                 ],
               );

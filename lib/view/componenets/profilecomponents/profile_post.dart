@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class ProfilePost extends StatelessWidget {
-  final String id;
+
   final String imageUrl;
   final VoidCallback onDelete;
 
   const ProfilePost({
     Key? key,
-    required this.id,
+  
     required this.imageUrl,
     required this.onDelete,
   }) : super(key: key);
@@ -37,13 +37,7 @@ class ProfilePost extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'Post ID: $id',
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
+             
                 IconButton(
                   icon: Icon(Icons.delete, color: Colors.red),
                   onPressed: () async {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_8/provider/Location_provider.dart';
+
 import 'package:flutter_application_8/provider/add_productprovider.dart';
 import 'package:flutter_application_8/provider/addprovider.dart';
 import 'package:flutter_application_8/provider/auth/authgate.dart';
@@ -34,7 +34,7 @@ class IntroPage extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => Addprovider()),
         ChangeNotifierProvider(create: (_) => OrderProvider()),
         ChangeNotifierProvider(create: (_) => Themeprovider()),
-         ChangeNotifierProvider(create:(_) => LocationProvider()),
+       
          ChangeNotifierProvider(create:(_) => OrderProviderr()),
             ChangeNotifierProvider(create:(_) => NotificationProvider()),
              ChangeNotifierProvider(create:(_) => FormStateProvider()),

@@ -21,16 +21,17 @@ class AuthService {
     } on FirebaseAuthException catch (e) {
       throw Exception(e.message ?? 'Error signing in');
     }
+    
   }
 
   Future<void> signOut() async {
     await _auth.signOut();
   }
 
-  Future<UserCredential> signUpWithEmailAndPassword(String email, String password, String displayName, File imageFile) async {
-    try {
-      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-
+  Future<UserCredential?> signUpWithEmailAndPassword(String email, String password, String displayName, File imageFile) async {
+  try {
+    UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+    if (userCredential.user != null) {
       final ref = FirebaseStorage.instance.ref().child('profile_images').child('${userCredential.user!.uid}.jpg');
       await ref.putFile(imageFile);
       final photoURL = await ref.getDownloadURL();
@@ -40,10 +41,12 @@ class AuthService {
       await saveUserDetails(userCredential.user!);
 
       return userCredential;
-    } on FirebaseAuthException catch (e) {
-      throw Exception(e.message ?? 'Error signing up');
     }
+  } on FirebaseAuthException catch (e) {
+    throw Exception(e.message ?? 'Error signing up');
   }
+  return null; // Return null if the userCredential.user is null
+}
 
   Future<void> saveUserDetails(User user) async {
     UserModel userModel = UserModel(

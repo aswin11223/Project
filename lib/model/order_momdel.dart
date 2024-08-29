@@ -8,7 +8,7 @@ class Order {
   final String phone;
   final String email;
   final String address;
-  final String location;
+
   final String id;
   final String pincode;
   final String state; 
@@ -22,7 +22,7 @@ class Order {
     required this.phone,
     required this.email,
     required this.address,
-    required this.location,
+    
     this.id = '',
   });
 }

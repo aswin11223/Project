@@ -17,4 +17,9 @@ class NotificationService {
       .orderBy('timestamp', descending: true)
       .snapshots();
   }
+  Future<void>deletenotification(String notifiactionid)async{
+    await _firestore.collection('notifications').doc(notifiactionid).delete();
+
+
+  }
 }

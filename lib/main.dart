@@ -7,6 +7,7 @@ import 'package:flutter_application_8/services/notifiaction_service.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
+  
   try {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,);
