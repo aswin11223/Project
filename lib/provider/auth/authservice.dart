@@ -16,7 +16,7 @@ class AuthService {
   Future<UserCredential> signInWithEmailPassword(String email, String password) async {
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(email: email, password: password);
-      await saveUserDetails(userCredential.user!);
+      await saveUserDetails(userCredential.user!,"");
       return userCredential;
     } on FirebaseAuthException catch (e) {
       throw Exception(e.message ?? 'Error signing in');
@@ -28,32 +28,33 @@ class AuthService {
     await _auth.signOut();
   }
 
-  Future<UserCredential?> signUpWithEmailAndPassword(String email, String password, String displayName, File imageFile) async {
+  Future signUpWithEmailAndPassword(String email, String password, String image , File imageFile) async {
   try {
     UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
     if (userCredential.user != null) {
       final ref = FirebaseStorage.instance.ref().child('profile_images').child('${userCredential.user!.uid}.jpg');
       await ref.putFile(imageFile);
       final photoURL = await ref.getDownloadURL();
-
-      await userCredential.user!.updateDisplayName(displayName);
-      await userCredential.user!.updatePhotoURL(photoURL);
-      await saveUserDetails(userCredential.user!);
+      print("///////////////////////////////");
+      print(photoURL);
+      //await userCredential.user!.updateDisplayName();
+      await userCredential.user!.updatePhotoURL(image);
+      await saveUserDetails(userCredential.user!,image);
 
       return userCredential;
     }
   } on FirebaseAuthException catch (e) {
     throw Exception(e.message ?? 'Error signing up');
   }
-  return null; // Return null if the userCredential.user is null
+ 
 }
 
-  Future<void> saveUserDetails(User user) async {
+  Future<void> saveUserDetails(User user ,String image) async {
     UserModel userModel = UserModel(
       uid: user.uid,
       email: user.email!,
-      displayName: user.displayName ?? '',
-      photoURL: user.photoURL ?? '',
+      Username: user.displayName?? '',
+      photoURL: image,
     );
 
     DocumentReference userRef = _firestore.collection('userss').doc(user.uid);
@@ -77,7 +78,7 @@ class AuthService {
     );
 
     UserCredential userCredential = await _auth.signInWithCredential(credential);
-    await saveUserDetails(userCredential.user!);
+    await saveUserDetails(userCredential.user!,"");
 
     return userCredential;
   }

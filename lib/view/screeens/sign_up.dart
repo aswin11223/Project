@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_8/provider/auth/authgate.dart';
 import 'package:flutter_application_8/view/screeens/Home_screen.dart';
+import 'package:flutter_application_8/view/screeens/testpage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_application_8/provider/auth/authservice.dart';
 import 'package:flutter_application_8/view/componenets/googl_button.dart';
@@ -77,15 +79,19 @@ class _RegisterPageState extends State<RegisterPage> {
       nameController.text,
       _image!,
     );
+    print("SignUp Success");
 
     // Check if sign up was successful
     if (userCredential != null) {
       // Fetch current user and navigate to home screen
       User? user = FirebaseAuth.instance.currentUser;
       if (user != null) {
+        print(user.photoURL);
+        print(user);
+        print(user.uid);
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => HomeScreen()),
+          MaterialPageRoute(builder: (context) => AuthGate()),
         );
       } else {
         throw FirebaseAuthException(

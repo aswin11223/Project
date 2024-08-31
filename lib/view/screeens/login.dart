@@ -58,95 +58,97 @@ class Login extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SizedBox(height: 10),
-            Text(
-              "Welcome back, you have been missed!",
-              style: TextStyle(
-                fontWeight: FontWeight.w800,
-                fontSize: 16,
-                color: Theme.of(context).colorScheme.inversePrimary,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 10),
+              Text(
+                "Welcome back, you have been missed!",
+                style: TextStyle(
+                  fontWeight: FontWeight.w800,
+                  fontSize: 16,
+                  color: Theme.of(context).colorScheme.inversePrimary,
+                ),
               ),
-            ),
-            const SizedBox(height: 10),
-            Textfieldd(
-              textcont: emailController,
-              obs: false,
-              hinttexxt: "Email",
-            ),
-            Textfieldd(
-              textcont: passwordController,
-              obs: true,
-              hinttexxt: "Password",
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                GestureDetector(
-                  onTap: () => resetPassword(context),
-                  child: const Text(
-                    "Forgot password?",
+              const SizedBox(height: 10),
+              Textfieldd(
+                textcont: emailController,
+                obs: false,
+                hinttexxt: "Email",
+              ),
+              Textfieldd(
+                textcont: passwordController,
+                obs: true,
+                hinttexxt: "Password",
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  GestureDetector(
+                    onTap: () => resetPassword(context),
+                    child: const Text(
+                      "Forgot password?",
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              const SizedBox(height: 10),
+              const SizedBox(height: 15),
+              Mybutton(textt: "Login", ontapp: () => login(context)),
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    "Not a member?",
                     style: TextStyle(
                       color: Colors.black,
                     ),
                   ),
-                )
-              ],
-            ),
-            const SizedBox(height: 10),
-            const SizedBox(height: 15),
-            Mybutton(textt: "Login", ontapp: () => login(context)),
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  "Not a member?",
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-                const SizedBox(width: 5),
-                GestureDetector(
-                  onTap: onTap,
-                  child: const Text(
-                    "Sign up now",
-                    style: TextStyle(
-                      color: Colors.black,
+                  const SizedBox(width: 5),
+                  GestureDetector(
+                    onTap: onTap,
+                    child: const Text(
+                      "Sign up now",
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text(
-                  "_______________",
-                  style: TextStyle(color: Theme.of(context).colorScheme.primary),
-                ),
-                const Text(
-                  "or continue with",
-                  style: TextStyle(color: Colors.grey),
-                ),
-                Text(
-                  "_______________",
-                  style: TextStyle(color: Theme.of(context).colorScheme.primary),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            GoogleButton(textt: "Google", ontapp: () => googleSignIn(context)),
-            GestureDetector(child: Text('Admin'),
-            onTap: () {
-              Navigator.push(context, PageTransition(child: Adminpanel(), type:PageTransitionType.bottomToTop));
-            },
-            )
-            
-          ],
+                ],
+              ),
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(
+                    "_______________",
+                    style: TextStyle(color: Theme.of(context).colorScheme.primary),
+                  ),
+                  const Text(
+                    "or continue with",
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                  Text(
+                    "_______________",
+                    style: TextStyle(color: Theme.of(context).colorScheme.primary),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              GoogleButton(textt: "Google", ontapp: () => googleSignIn(context)),
+              GestureDetector(child: Text('Admin'),
+              onTap: () {
+                Navigator.push(context, PageTransition(child: Adminpanel(), type:PageTransitionType.bottomToTop));
+              },
+              )
+              
+            ],
+          ),
         ),
       ),
     );

@@ -1,13 +1,13 @@
 class UserModel {
   final String uid;
   final String email;
-  final String displayName;
+  final String Username;
   final String photoURL;
 
   UserModel({
     required this.uid,
     required this.email,
-    required this.displayName,
+    required this.Username,
     required this.photoURL,
   });
 
@@ -15,7 +15,7 @@ class UserModel {
     return {
       'uid': uid,
       'email': email,
-      'displayName': displayName,
+      'username': Username,
       'photoURL': photoURL,
     };
   }
@@ -24,7 +24,7 @@ class UserModel {
     return UserModel(
       uid: map['uid'] ?? '',
       email: map['email'] ?? '',
-      displayName: map['displayName'] ?? '',
+      Username: map['username'] ?? '',
       photoURL: map['photoURL'] ?? '',
     );
   }

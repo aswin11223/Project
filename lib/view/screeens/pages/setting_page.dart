@@ -13,8 +13,8 @@ import 'package:flutter_application_8/view/screeens/pages/terms_condition.dart';
 import 'package:provider/provider.dart';
 
 class Setting extends StatelessWidget {
-  final String name;
-  const Setting({super.key, required this.name});
+  
+  const Setting({super.key, });
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +54,7 @@ class Setting extends StatelessWidget {
               height: screenHeight * 0.05,
               child: Center(
                 child: Text(
-                  name,
+                  "Settings",
                   style: const TextStyle(
                       fontWeight: FontWeight.w500, fontSize: 25),
                 ),

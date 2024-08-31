@@ -5,6 +5,7 @@ import 'package:flutter_application_8/provider/addprovider.dart';
 import 'package:flutter_application_8/provider/auth/authgate.dart';
 import 'package:flutter_application_8/provider/cartprovider.dart';
 import 'package:flutter_application_8/provider/category_provider.dart';
+import 'package:flutter_application_8/provider/edit_provider.dart';
 import 'package:flutter_application_8/provider/formstate_provider.dart';
 
 
@@ -38,6 +39,7 @@ class IntroPage extends StatelessWidget {
          ChangeNotifierProvider(create:(_) => OrderProviderr()),
             ChangeNotifierProvider(create:(_) => NotificationProvider()),
              ChangeNotifierProvider(create:(_) => FormStateProvider()),
+               ChangeNotifierProvider(create:(_) => AddDetailProvider()),
       ],
       child: Consumer<Themeprovider>(
         builder: (context, themeProvider, child) {

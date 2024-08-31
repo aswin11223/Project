@@ -63,7 +63,7 @@ class AdminOrderManagementPage extends StatelessWidget {
               // Provide default values if any field is null
               final userId = data['userId'] ?? 'Unknown User';
               final address = data['address'] ?? 'No Address';
-              final pricer = (data['price'] != null) ? data['price'].toString() : '0';
+              final pricer = (data['price'] != null) ? data['price'].toString():'0';
               final phone = data['phoneno'] ?? 'No Phone Number';
 
               return ListTile(

@@ -12,19 +12,23 @@ class AuthGate extends StatelessWidget {
       body: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
-          // Check for the connection state of the stream
           if (snapshot.connectionState == ConnectionState.waiting) {
-            // While waiting for Firebase to initialize, show a loading indicator
-            return const Center(child: CircularProgressIndicator());
+            // Show loading indicator while waiting for data
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasData) {
+            // User is authenticated, navigate to HomeScreen
+            return  HomeScreen
+            ();
           } else if (snapshot.hasError) {
-            // Handle any errors that occur during the connection
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (snapshot.hasData && snapshot.data != null) {
-            // User is signed in, navigate to the HomeScreen
-            return HomeScreen();
+            // Handle any errors from the auth stream
+            return Center(
+              child: Text('Something went wrong: ${snapshot.error}'),
+            );
           } else {
-            // User is not signed in, navigate to the login or registration screen
-            return loginorreg();
+            // User is not authenticated, navigate to login or registration screen
+            return  loginorreg();
           }
         },
       ),

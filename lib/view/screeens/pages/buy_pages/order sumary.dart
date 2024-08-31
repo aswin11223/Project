@@ -11,6 +11,7 @@ import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class OrderSummary extends StatelessWidget {
   final double totalPrice;
+  
   final ValueNotifier<String> _nameNotifier = ValueNotifier<String>('');
   final ValueNotifier<String> _phoneNotifier = ValueNotifier<String>('');
   final ValueNotifier<String> _emailNotifier = ValueNotifier<String>('');
@@ -18,7 +19,7 @@ class OrderSummary extends StatelessWidget {
   final ValueNotifier<String> _stateNotifier = ValueNotifier<String>('');
   final ValueNotifier<String> _addressNotifier = ValueNotifier<String>('');
 
-  OrderSummary({super.key, required this.totalPrice});
+  OrderSummary({super.key, required this.totalPrice,});
 
   void _handlePaymentSuccess(BuildContext context, PaymentSuccessResponse response) {
     final address = _addressNotifier.value;
@@ -28,7 +29,7 @@ class OrderSummary extends StatelessWidget {
     Provider.of<OrderProviderr>(context, listen: false).addOrder(order);
 
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => OrderStatusPage(orderId: orderId, address: address,phoneno: _phoneNotifier.toString(),),
+      builder: (context) => OrderStatusPage(orderId: orderId, address: address,phoneno: _phoneNotifier.toString(),name: _nameNotifier.toString(),),
     ));
   }
 

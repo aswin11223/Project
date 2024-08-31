@@ -4,8 +4,10 @@ class OrderStatusPage extends StatelessWidget {
   final String orderId;
   final String address;
   final String phoneno;
+  final String name;
+  
 
-  const OrderStatusPage({super.key, required this.orderId, required this.address,required this.phoneno,});
+  const OrderStatusPage({super.key, required this.orderId, required this.address,required this.phoneno,required this.name});
 
   @override
   Widget build(BuildContext context) {

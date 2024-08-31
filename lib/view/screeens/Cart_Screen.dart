@@ -11,6 +11,7 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
     final User? user = FirebaseAuth.instance.currentUser;
+  
 
 
     void buy(){
@@ -110,7 +111,9 @@ class CartScreen extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                 BuyButton(ontap: buy
+                 BuyButton(ontap: (){
+                  
+                 }
                       )
                 ],
               ),
