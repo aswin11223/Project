@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_8/model/add_product.dart';
 import 'package:flutter_application_8/provider/cartprovider.dart';
@@ -13,11 +14,12 @@ class ProductListScreen extends StatelessWidget {
   final String categoryId;
   final String categoryName;
 
-  const ProductListScreen({
+   ProductListScreen({
     required this.categoryId,
     required this.categoryName,
     super.key,
   });
+  final auth=FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -104,6 +106,9 @@ class ProductListScreen extends StatelessWidget {
                     },
                   ),
                 ),
+                 IconButton(onPressed: (){
+                  auth.signOut();
+                 }, icon: Icon(Icons.logout))
               ],
             ),
           );

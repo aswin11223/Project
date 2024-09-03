@@ -81,7 +81,7 @@ class OrderSummary extends StatelessWidget {
     var options = {
       'key': 'rzp_test_VzSMZ0uUpAgbqc', // Replace with your Razorpay API key
       'amount': totalPrice * 100, // Amount in paisa (1 INR = 100 paisa)
-      'name': 'Your App Name',
+      'name': 'Artistry Hub',
       'description': 'Order Payment',
       'prefill': {
         'contact': _phoneNotifier.value,

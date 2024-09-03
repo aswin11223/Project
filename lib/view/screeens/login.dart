@@ -141,11 +141,7 @@ class Login extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               GoogleButton(textt: "Google", ontapp: () => googleSignIn(context)),
-              GestureDetector(child: Text('Admin'),
-              onTap: () {
-                Navigator.push(context, PageTransition(child: Adminpanel(), type:PageTransitionType.bottomToTop));
-              },
-              )
+              
               
             ],
           ),

@@ -16,7 +16,7 @@ class CartProvider with ChangeNotifier {
     if (user != null) {
       // Add product to Firestore for the current user
       await _firestore
-          .collection('users')
+          .collection('carts')
           .doc(user.uid)
           .collection('cart')
           .add(product.toMap());
@@ -33,7 +33,7 @@ class CartProvider with ChangeNotifier {
     if (user != null) {
       // Remove product from Firestore for the current user
       var snapshot = await _firestore
-          .collection('users')
+          .collection('carts')
           .doc(user.uid)
           .collection('cart')
           .where('id', isEqualTo: product.id)
@@ -60,7 +60,7 @@ class CartProvider with ChangeNotifier {
     if (user != null) {
       // Clear cart in Firestore for the current user
       var snapshot = await _firestore
-          .collection('users')
+          .collection('carts')
           .doc(user.uid)
           .collection('cart')
           .get();
@@ -81,7 +81,7 @@ class CartProvider with ChangeNotifier {
     if (user != null) {
       // Fetch the cart items for the user from Firestore
       var snapshot = await _firestore
-          .collection('users')
+          .collection('carts')
           .doc(user.uid)
           .collection('cart')
           .get();

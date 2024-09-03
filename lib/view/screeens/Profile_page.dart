@@ -4,9 +4,11 @@ import 'package:flutter_application_8/model/user_model.dart';
 import 'package:flutter_application_8/provider/auth/authservice.dart';
 import 'package:flutter_application_8/provider/category_provider.dart';
 import 'package:flutter_application_8/view/componenets/profilecomponents/profile_post.dart';
+import 'package:flutter_application_8/view/screeens/adminpanel/adminlogin.dart';
 import 'package:flutter_application_8/view/screeens/pages/add_product.dart';
 import 'package:flutter_application_8/view/screeens/pages/add_user_daetails.dart';
 import 'package:flutter_application_8/view/screeens/pages/setting_page.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -42,12 +44,11 @@ class ProfilePage extends StatelessWidget {
             child: const Icon(Icons.add),
           ),
           appBar: AppBar(
-
             actions: [
               IconButton(onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>AddDetailPage()));
+             Navigator.push(context, PageTransition(child: Adminpanel(), type:PageTransitionType.bottomToTop));
 
-              }, icon:Icon(Icons.edit)),
+              }, icon:Icon(Icons.person)),
               IconButton(
                 onPressed: () {
                   Navigator.push(
@@ -77,7 +78,7 @@ class ProfilePage extends StatelessWidget {
                 child: Column(
                   children: [
                     CircleAvatar(
-                      backgroundImage: NetworkImage(user.photoURL),
+                      backgroundImage: NetworkImage('https://static.vecteezy.com/system/resources/thumbnails/029/364/941/small/3d-carton-of-boy-going-to-school-ai-photo.jpg'),
                       radius: 50,
                     ),
                     const SizedBox(height: 10),

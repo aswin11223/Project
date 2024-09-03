@@ -5,6 +5,7 @@ import 'package:flutter_application_8/services/adminauth.dart';
 import 'package:flutter_application_8/view/screeens/adminpanel/Admin_Order_manage.dart';
 import 'package:flutter_application_8/view/screeens/adminpanel/addcategory.dart';
 import 'package:flutter_application_8/view/screeens/adminpanel/users_list.dart';
+import 'package:flutter_application_8/view/screeens/pages/add_product.dart';
 
 import 'package:flutter_application_8/view/screeens/pages/buy_pages/order_staus.dart';
 import 'package:page_transition/page_transition.dart';
@@ -91,8 +92,30 @@ class DashBoard extends StatelessWidget {
                       ),
                   ),
                 ),
+                
+                
               ],
-            )
+            ),
+            SizedBox(height: 10,),
+             GestureDetector(
+                  onTap:(){ Navigator.push(context, MaterialPageRoute(builder: (context)=>AddProductScreen()));},
+                  child: Container(
+                    width: screenheight * 0.20,
+                    height: screenheight * 0.20,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.production_quantity_limits, size: 30),
+                          SizedBox(height: screenheight * 0.02),
+                          const Text("category"),
+                        ],
+                      ),
+                  ),
+                ),
           ],
         ),
       ),

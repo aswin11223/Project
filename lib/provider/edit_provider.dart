@@ -9,6 +9,10 @@ class AddDetailProvider with ChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
+  AddDetail? _currentDetail;
+
+  AddDetail? get currentDetail => _currentDetail;
+
   Future<void> addDetail(AddDetail detail, File imageFile) async {
     try {
       // Upload image to Firebase Storage
@@ -17,15 +21,16 @@ class AddDetailProvider with ChangeNotifier {
       final imageUrl = await ref.getDownloadURL();
 
       // Update the detail object with the image URL
-      detail = AddDetail(
+      final newDetail = AddDetail(
         id: detail.id,
         name: detail.name,
         image: imageUrl,
       );
 
       // Save detail to Firestore
-      await _firestore.collection('details').doc(detail.id).set(detail.toMap());
+      await _firestore.collection('details').doc(detail.id).set(newDetail.toMap());
 
+      _currentDetail = newDetail;
       notifyListeners();
     } catch (e) {
       throw Exception('Error adding detail: $e');
@@ -44,20 +49,46 @@ class AddDetailProvider with ChangeNotifier {
       }
 
       // Update the detail object
-      if (imageUrl != null) {
-        detail = AddDetail(
-          id: detail.id,
-          name: detail.name,
-          image: imageUrl,
-        );
-      }
+      final updatedDetail = AddDetail(
+        id: detail.id,
+        name: detail.name,
+        image: imageUrl ?? detail.image,
+      );
 
       // Save or update the detail in Firestore
-      await _firestore.collection('details').doc(detail.id).update(detail.toMap());
+      await _firestore.collection('details').doc(detail.id).update(updatedDetail.toMap());
 
+      _currentDetail = updatedDetail;
       notifyListeners();
     } catch (e) {
       throw Exception('Error updating detail: $e');
+    }
+  }
+
+  Future<void> getDetail(String id) async {
+    try {
+      final doc = await _firestore.collection('details').doc(id).get();
+
+      if (doc.exists) {
+        _currentDetail = AddDetail.fromFirestore(doc);
+        notifyListeners();
+      } else {
+        throw Exception('Detail not found');
+      }
+    } catch (e) {
+      throw Exception('Error fetching detail: $e');
+    }
+  }
+
+  Future<List<AddDetail>> getAllDetails() async {
+    try {
+      final querySnapshot = await _firestore.collection('details').get();
+      final details = querySnapshot.docs
+          .map((doc) => AddDetail.fromFirestore(doc))
+          .toList();
+      return details;
+    } catch (e) {
+      throw Exception('Error fetching details: $e');
     }
   }
 }

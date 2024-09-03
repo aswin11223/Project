@@ -112,7 +112,7 @@ class CartScreen extends StatelessWidget {
                     ),
                   ),
                  BuyButton(ontap: (){
-                  
+                 buy();
                  }
                       )
                 ],

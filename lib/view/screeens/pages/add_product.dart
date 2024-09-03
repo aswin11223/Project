@@ -48,63 +48,66 @@ class AddProductScreen extends StatelessWidget {
             onPressed: () {},
             icon: ProductArrow(ontapressed: back, ontapress: clearcon)),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              children: [
-                if (addProductProvider.image != null)
-                  Image.file(
-                    addProductProvider.image!,
-                    height: 120,
-                  ),
-                const SizedBox(
-                  height: 30,
+      body: Stack(
+        children: [
+          Padding(
+            padding: EdgeInsets.all(16.0),
+            child: SingleChildScrollView(
+              child: Center(
+                child: Column(
+                  children: [
+                    if (addProductProvider.image != null)
+                      Image.file(
+                        addProductProvider.image!,
+                        height: 120,
+                      ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    PickImage(text: "image", ontap: addimage),
+                    ProductField(
+                        hinttexxt: "Art Name",
+                        textcont: addProductProvider.nameController),
+                    ProductField(
+                        hinttexxt: "Artist Name",
+                        textcont: addProductProvider.artistNameController),
+                    Descriptioncon(
+                        hinttexxt: "Description",
+                        textcont: addProductProvider.descriptionController),
+                    Pricecon(
+                        hinttexxt: "Price",
+                        textcont: addProductProvider.priceController),
+                    const SizedBox(height: 10),
+                    PostButton(
+                        text: "Post",
+                        ontap: () {
+                          addProductProvider.addProduct(context, categories);
+                        }),
+                    Wrap(
+                      spacing: 8.0,
+                      children: categories.map((category) {
+                        return ChoiceChip(
+                          label: Text(category.name),
+                          selected:
+                              addProductProvider.selectedCategoryId == category.id,
+                          onSelected: (isSelected) {
+                            addProductProvider
+                                .selectCategory(isSelected ? category.id : null);
+                          },
+                          selectedColor: Colors.brown,
+                        );
+                      }).toList(),
+                    ),
+                  ],
                 ),
-                PickImage(text: "image", ontap: addimage),
-                ProductField(
-                    hinttexxt: "Art Name",
-                    textcont: addProductProvider.nameController),
-                ProductField(
-                    hinttexxt: "Artist Name",
-                    textcont: addProductProvider.artistNameController),
-                Descriptioncon(
-                    hinttexxt: "Description",
-                    textcont: addProductProvider.descriptionController),
-                Pricecon(
-                    hinttexxt: "Price",
-                    textcont: addProductProvider.priceController),
-                const SizedBox(height: 10),
-                PostButton(
-                    text: "Post",
-                    ontap: () {
-                      addProductProvider.addProduct(context, categories);
-                    }),
-                Wrap(
-                  spacing: 8.0,
-                  children: categories.map((category) {
-                    return ChoiceChip(
-                      label: Text(category.name),
-                      selected:
-                          addProductProvider.selectedCategoryId == category.id,
-                      onSelected: (isSelected) {
-                        addProductProvider
-                            .selectCategory(isSelected ? category.id : null);
-                      },
-                      selectedColor: Colors.brown,
-                    );
-                  }).toList(),
-                ),
-                ElevatedButton(
-                    onPressed: () {
-                      _auth.signOut();
-                    },
-                    child: Text("logout"))
-              ],
+              ),
             ),
           ),
-        ),
+          if (addProductProvider.isLoading)
+            Center(
+              child: CircularProgressIndicator(),
+            ),
+        ],
       ),
     );
   }
